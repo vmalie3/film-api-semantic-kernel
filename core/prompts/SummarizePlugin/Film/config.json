@@ -1,0 +1,21 @@
+{
+    "schema": 1,
+    "description": "Return a JSON with a summary and other information about a film",
+    "execution_settings": {
+      "default": {
+        "max_tokens": 1000,
+        "temperature": 0.3,
+        "top_p": 0.0,
+        "presence_penalty": 0.0,
+        "frequency_penalty": 0.0
+      }
+    },
+    "input_variables": [
+      {
+        "name": "film_id",
+        "description": "Film Id to be used to get the film details",
+        "default": null
+      }
+    ]
+  }
+  
