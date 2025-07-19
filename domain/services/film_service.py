@@ -6,10 +6,11 @@ import time
 from typing import Optional
 
 from domain.entities.film import Film
+from domain.entities.base import MPAARating
 from domain.models.requests.film import CreateFilmRequest, UpdateFilmRequest
 from domain.models.responses.film import FilmResponse, FilmCreateResponse, FilmListResponse, FilmListResponse
 from domain.repositories.film_repository import FilmRepository
-from domain.utils.model_converter import convert_film_to_response, convert_films_to_responses
+from domain.utils.model_converter import convert_film_to_response, convert_films_to_responses, convert_films_to_responses_async
 from core.logging import get_logger, log_service_operation
 
 class FilmService:
@@ -145,18 +146,33 @@ class FilmService:
         try:
             self.logger.debug("Creating film", title=film_data.title)
             
+            # Convert rating string to enum if provided
+            rating_enum = None
+            if film_data.rating:
+                rating_mapping = {
+                    "G": MPAARating.G,
+                    "PG": MPAARating.PG,
+                    "PG-13": MPAARating.PG_13,
+                    "R": MPAARating.R,
+                    "NC-17": MPAARating.NC_17
+                }
+                rating_enum = rating_mapping.get(film_data.rating)
+            
             # Create film instance
             film = Film(
                 title=film_data.title,
                 description=film_data.description,
                 release_year=film_data.release_year,
                 language_id=film_data.language_id,
+                original_language_id=None,
                 rental_duration=film_data.rental_duration,
                 rental_rate=film_data.rental_rate,
                 length=film_data.length,
                 replacement_cost=film_data.replacement_cost,
-                rating=film_data.rating,
+                rating=rating_enum,
+                last_update=None,
                 special_features=film_data.special_features,
+                fulltext="",
                 streaming_available=film_data.streaming_available or False
             )
             
@@ -164,8 +180,7 @@ class FilmService:
             created_film = await self.film_repository.create_film(film)
             
             response = FilmCreateResponse(
-                film_id=created_film.film_id,
-                title=created_film.title,
+                film_id=created_film.film_id or 0,
                 message="Film created successfully"
             )
             
@@ -340,4 +355,17 @@ class FilmService:
             List of matching films
         """
         films = await self.film_repository.search_films_by_title(title)
-        return convert_films_to_responses(films)
+        return await convert_films_to_responses_async(films)
+    
+    async def get_film_by_title_search(self, title: str) -> Optional[FilmResponse]:
+        """
+        Get the first film that matches the title search criteria.
+        
+        Args:
+            title: Title to search for
+            
+        Returns:
+            First matching film response or None if not found
+        """
+        film = await self.film_repository.get_film_by_title_search(title)
+        return convert_film_to_response(film) if film else None

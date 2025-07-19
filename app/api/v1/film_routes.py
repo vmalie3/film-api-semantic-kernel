@@ -41,3 +41,12 @@ async def get_film(
         )
     
     return film
+
+@router.get("/search/{film_search_title}", response_model=FilmResponse | None)
+async def get_film_by_title(
+    film_search_title: str,
+    service: FilmService = Depends(get_film_service)
+) -> FilmResponse | None:
+    """Get a film by title."""
+    film = await service.get_film_by_title_search(film_search_title.upper())
+    return film

@@ -1,0 +1,74 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+
+        {
+            "name": "FastAPI Debug (Poetry)",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${workspaceFolder}/app/main.py",
+            "console": "integratedTerminal",
+            "cwd": "${workspaceFolder}",
+            "python": "/Users/victoriamalie/Library/Caches/pypoetry/virtualenvs/mini-pagilla-api-OuAIel8Q-py3.13/bin/python",
+            "args": [],
+            "justMyCode": false,
+            "env": {
+                "PYTHONPATH": "${workspaceFolder}"
+            }
+        },
+        {
+            "name": "FastAPI Module Debug (Poetry)",
+            "type": "debugpy",
+            "request": "launch",
+            "module": "app",
+            "console": "integratedTerminal",
+            "cwd": "${workspaceFolder}",
+            "python": "/Users/victoriamalie/Library/Caches/pypoetry/virtualenvs/mini-pagilla-api-OuAIel8Q-py3.13/bin/python",
+            "justMyCode": false,
+            "env": {
+                "PYTHONPATH": "${workspaceFolder}"
+            }
+        },
+        {
+            "name": "FastAPI Uvicorn Debug (Poetry)",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${workspaceFolder}/app/main.py",
+            "console": "integratedTerminal",
+            "cwd": "${workspaceFolder}",
+            "python": "/Users/victoriamalie/Library/Caches/pypoetry/virtualenvs/mini-pagilla-api-OuAIel8Q-py3.13/bin/python",
+            "args": [],
+            "justMyCode": false,
+            "env": {
+                "PYTHONPATH": "${workspaceFolder}"
+            },
+            "preLaunchTask": "poetry-install"
+        },
+        {
+            "name": "Python: Current File",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${file}",
+            "console": "integratedTerminal",
+            "cwd": "${workspaceFolder}",
+            "env": {
+                "PYTHONPATH": "${workspaceFolder}"
+            },
+            "python": "/Users/victoriamalie/Library/Caches/pypoetry/virtualenvs/mini-pagilla-api-OuAIel8Q-py3.13/bin/python",
+            "justMyCode": false
+        },
+        {
+            "name": "Python: Current File (External Terminal)",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${file}",
+            "console": "externalTerminal",
+            "cwd": "${workspaceFolder}",
+            "env": {
+                "PYTHONPATH": "${workspaceFolder}"
+            },
+            "python": "/Users/victoriamalie/Library/Caches/pypoetry/virtualenvs/mini-pagilla-api-OuAIel8Q-py3.13/bin/python",
+            "justMyCode": false
+        }
+    ]
+} 

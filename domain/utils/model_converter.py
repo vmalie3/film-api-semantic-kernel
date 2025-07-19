@@ -112,6 +112,7 @@ class ModelConverter(Generic[T]):
 
 
 # Pre-configured converters for common models
+from domain.entities.film import Film
 from domain.models.responses.film import FilmResponse
 
 film_converter = ModelConverter(FilmResponse)
@@ -121,11 +122,13 @@ def convert_film_to_response(film: SQLModel) -> FilmResponse:
     """Convert Film model to FilmResponse efficiently."""
     return film_converter.convert_single(
         film,
-        language_name=film.language.name if film.language else None
+        extra_fields_func=lambda film: {
+            'language_name': film.language.name if film.language else None
+        }
     )
 
 
-def convert_films_to_responses(films: List[SQLModel]) -> List[FilmResponse]:
+def convert_films_to_responses(films: List[Film]) -> List[FilmResponse]:
     """Convert multiple Film models to FilmResponse list efficiently."""
     return film_converter.convert_many(
         films,
@@ -135,7 +138,7 @@ def convert_films_to_responses(films: List[SQLModel]) -> List[FilmResponse]:
     )
 
 
-async def convert_films_to_responses_async(films: List[SQLModel]) -> List[FilmResponse]:
+async def convert_films_to_responses_async(films: List[Film]) -> List[FilmResponse]:
     """Convert multiple Film models to FilmResponse list asynchronously (for large datasets)."""
     return await film_converter.convert_many_async(
         films,

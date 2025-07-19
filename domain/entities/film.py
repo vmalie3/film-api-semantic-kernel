@@ -3,7 +3,7 @@ Film-related models: Actor, Category, Language, Film, FilmActor, FilmCategory.
 """
 
 from sqlmodel import SQLModel, Field, Relationship
-from sqlalchemy.orm import RelationshipProperty
+from sqlalchemy.orm import Mapped, RelationshipProperty
 from sqlalchemy import Index, CheckConstraint, INTEGER, CHAR, TEXT, Column, TIMESTAMP, SMALLINT, NUMERIC, ForeignKey
 from sqlalchemy.dialects.postgresql import TSVECTOR, ARRAY, DOMAIN, ENUM
 from sqlalchemy.sql import func
@@ -75,9 +75,9 @@ class Film(Base, table=True):
     streaming_available: bool = Field(default=False, nullable=False)
     
     # Relationships
-    language: Optional[Language] = Relationship(
+    language: Mapped[Optional[Language]] = Relationship(
         back_populates="films",
-        sa_relationship=RelationshipProperty("Language", primaryjoin="Film.language_id == Language.language_id")
+        sa_relationship=RelationshipProperty("Language", primaryjoin="Film.language_id == Language.language_id"),
     )
     original_language: Optional[Language] = Relationship(
         back_populates="original_language_films",
